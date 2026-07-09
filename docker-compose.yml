@@ -1,0 +1,25 @@
+# docker-compose.yml
+services:
+  app:
+    build:
+      context: .
+      # VITE_API_URL/VITE_SITE_URL must be passed as build args, not just runtime
+      # `environment` — Vite inlines them into the client bundle at build time
+      # (see Dockerfile), so a runtime-only env var can never change them after
+      # the image exists.
+      #
+      # Uses DOCKER_-prefixed variable names deliberately: Compose auto-loads
+      # this project's own .env for ${...} substitution, and that file already
+      # defines VITE_API_URL/VITE_SITE_URL for `npm run dev` (pointing at Vite's
+      # dev port, not this container's port) — reusing the same names here
+      # would silently bake the wrong SITE_URL into the image every time.
+      args:
+        VITE_API_URL: ${DOCKER_VITE_API_URL:-http://127.0.0.1:8000}
+        VITE_SITE_URL: ${DOCKER_VITE_SITE_URL:-http://localhost:4180}
+    ports:
+      - '4180:8080'
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:8080/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3

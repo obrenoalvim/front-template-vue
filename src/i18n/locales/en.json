@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Home",
+    "account": "Account",
+    "login": "Log in",
+    "logout": "Log out"
+  },
+  "home": {
+    "title": "front-template-vue",
+    "description": "Vue 3 + Vite frontend consuming the Laravel API.",
+    "getStarted": "Get started",
+    "emailLabel": "Email",
+    "subscribe": "Subscribe",
+    "subscribed": "Thanks, check your inbox."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email address.",
+    "minLength": "Must be at least {min} characters.",
+    "passwordMismatch": "Passwords don't match."
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Log in",
+      "forgot": "Forgot your password?",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up",
+      "success": "Welcome back."
+    },
+    "register": {
+      "title": "Create account",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "passwordConfirmation": "Confirm password",
+      "submit": "Sign up",
+      "haveAccount": "Already have an account?",
+      "login": "Log in",
+      "success": "Account created."
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "description": "Enter your email and we'll send you a reset link.",
+      "email": "Email",
+      "submit": "Send reset link",
+      "success": "If that email exists, a reset link has been sent."
+    },
+    "reset": {
+      "title": "Set a new password",
+      "password": "New password",
+      "passwordConfirmation": "Confirm password",
+      "submit": "Reset password",
+      "success": "Password reset. Log in with your new password.",
+      "invalidLink": "This reset link is invalid or expired."
+    }
+  },
+  "account": {
+    "title": "Account",
+    "name": "Name",
+    "email": "Email",
+    "changePassword": {
+      "title": "Change password",
+      "current": "Current password",
+      "new": "New password",
+      "confirmation": "Confirm new password",
+      "submit": "Update password",
+      "success": "Password changed."
+    },
+    "danger": {
+      "title": "Delete account",
+      "description": "This permanently deletes your account and all its data.",
+      "password": "Confirm your password",
+      "submit": "Delete account",
+      "success": "Account deleted."
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong. Try again."
+  }
+}

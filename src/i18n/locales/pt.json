@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Início",
+    "account": "Conta",
+    "login": "Entrar",
+    "logout": "Sair"
+  },
+  "home": {
+    "title": "front-template-vue",
+    "description": "Frontend Vue 3 + Vite consumindo a API Laravel.",
+    "getStarted": "Começar",
+    "emailLabel": "E-mail",
+    "subscribe": "Inscrever",
+    "subscribed": "Valeu, confira sua caixa de entrada."
+  },
+  "validation": {
+    "required": "Este campo é obrigatório.",
+    "email": "Informe um e-mail válido.",
+    "minLength": "Deve ter no mínimo {min} caracteres.",
+    "passwordMismatch": "As senhas não coincidem."
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "email": "E-mail",
+      "password": "Senha",
+      "submit": "Entrar",
+      "forgot": "Esqueceu sua senha?",
+      "noAccount": "Não tem uma conta?",
+      "register": "Cadastre-se",
+      "success": "Bem-vindo de volta."
+    },
+    "register": {
+      "title": "Criar conta",
+      "name": "Nome",
+      "email": "E-mail",
+      "password": "Senha",
+      "passwordConfirmation": "Confirmar senha",
+      "submit": "Cadastrar",
+      "haveAccount": "Já tem uma conta?",
+      "login": "Entrar",
+      "success": "Conta criada."
+    },
+    "forgot": {
+      "title": "Redefinir sua senha",
+      "description": "Informe seu e-mail e enviaremos um link de redefinição.",
+      "email": "E-mail",
+      "submit": "Enviar link",
+      "success": "Se esse e-mail existir, um link de redefinição foi enviado."
+    },
+    "reset": {
+      "title": "Definir nova senha",
+      "password": "Nova senha",
+      "passwordConfirmation": "Confirmar senha",
+      "submit": "Redefinir senha",
+      "success": "Senha redefinida. Entre com sua nova senha.",
+      "invalidLink": "Este link de redefinição é inválido ou expirou."
+    }
+  },
+  "account": {
+    "title": "Conta",
+    "name": "Nome",
+    "email": "E-mail",
+    "changePassword": {
+      "title": "Trocar senha",
+      "current": "Senha atual",
+      "new": "Nova senha",
+      "confirmation": "Confirmar nova senha",
+      "submit": "Atualizar senha",
+      "success": "Senha alterada."
+    },
+    "danger": {
+      "title": "Excluir conta",
+      "description": "Isso apaga sua conta e todos os dados permanentemente.",
+      "password": "Confirme sua senha",
+      "submit": "Excluir conta",
+      "success": "Conta excluída."
+    }
+  },
+  "errors": {
+    "generic": "Algo deu errado. Tente de novo."
+  }
+}
