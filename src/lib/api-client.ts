@@ -9,6 +9,21 @@ export function setAuthToken(token: string | null) {
   authToken = token
 }
 
+// Registered once by the auth store (setRefreshHandler) — kept here as a plain
+// callback instead of importing the store directly, since the store imports
+// this module and a two-way import would be circular. Returns the new access
+// token on success, or null if the refresh token itself is dead (caller logs out).
+let refreshHandler: (() => Promise<string | null>) | null = null
+
+export function setRefreshHandler(handler: (() => Promise<string | null>) | null) {
+  refreshHandler = handler
+}
+
+// Shared across all callers so N requests that 401 around the same time trigger
+// exactly one refresh instead of each rotating the refresh token and invalidating
+// the others.
+let refreshing: Promise<string | null> | null = null
+
 export interface ApiErrorShape {
   status: number
   message: string
@@ -43,6 +58,7 @@ async function request<T>(
   method: string,
   path: string,
   { params, body, ...init }: RequestOptions & { body?: unknown } = {},
+  isRetry = false,
 ): Promise<T> {
   const url = buildUrl(path, params)
 
@@ -59,6 +75,16 @@ async function request<T>(
   })
 
   if (!res.ok) {
+    if (res.status === 401 && !isRetry && refreshHandler && path !== '/api/auth/refresh') {
+      refreshing ??= refreshHandler().finally(() => {
+        refreshing = null
+      })
+      const newToken = await refreshing
+      if (newToken) {
+        return request<T>(method, path, { params, body, ...init }, true)
+      }
+    }
+
     const errorBody = await res.json().catch(() => undefined)
     if (import.meta.env.DEV) {
       console.error(`[api] ${method} ${url} -> ${res.status}`, errorBody)
@@ -72,6 +98,36 @@ async function request<T>(
 
   if (res.status === 204) return undefined as T
   return res.json() as Promise<T>
+}
+
+/**
+ * Laravel's /api/auth/refresh is authenticated BY the refresh token itself
+ * (Sanctum ability check, see back-template-laravel's AuthController) — not a
+ * token-in-body call — so this bypasses the normal `authToken` header and
+ * doesn't go through `request()` (that would recurse into the 401 handler above).
+ */
+export async function refreshWithToken(
+  refreshToken: string,
+): Promise<{ accessToken: string; refreshToken: string }> {
+  const res = await fetch(buildUrl('/api/auth/refresh'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${refreshToken}`,
+    },
+  })
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => undefined)
+    throw new ApiError(
+      res.status,
+      (errorBody as { message?: string })?.message ?? res.statusText,
+      errorBody,
+    )
+  }
+
+  return res.json() as Promise<{ accessToken: string; refreshToken: string }>
 }
 
 export const api = {

@@ -51,6 +51,10 @@ Ver `.env.example`.
 
 Todo usuário tem um `role` (`'user'` | `'admin'`) vindo das respostas de login/`/api/account` da API Laravel — nunca confia num `role` que você mesmo envia numa requisição. `/admin` (`src/views/AdminView.vue`) é a referência pra uma página admin-only: o `meta: { requiresAdmin: true }` da rota é checado no guard único de navegação em `src/router/index.ts` (que também aguarda um `fetchMe()` se o usuário ainda não foi buscado — um reload duro chega com token mas sem usuário carregado). Isso é só conveniência de UX; o gate real é o middleware `admin` do Laravel rejeitando a requisição. Promove um usuário pelo lado Laravel (`UPDATE users SET role = 'admin' ...`), depois loga de novo — o role é lido fresco de `/api/account`, não fica em cache de uma sessão antiga.
 
+## Sessões
+
+Login/register retornam `{ user, accessToken, refreshToken }` — a API Laravel emite os dois como tokens Sanctum ability-scoped separados (ver o README daquele repo). `src/lib/api-client.ts` pega um `401`, chama o handler de refresh registrado pela auth store (`POST /api/auth/refresh`, autenticado _pelo_ próprio refresh token — mandado como Bearer header da requisição, não como campo do body), e tenta de novo a requisição que falhou uma vez com o novo access token. Requisições concorrentes que tomam 401 mais ou menos na mesma hora compartilham um único refresh em andamento (uma promise a nível de módulo, não um refresh por requisição), pra não competir com a rotação do Laravel e invalidar o refresh token umas das outras. Se o próprio refresh falhar, a store faz logout e o erro original passa normal. `logout()` manda `refresh_token` no body pra revogar no servidor também, não só a sessão local.
+
 ## Docker
 
 ```sh
