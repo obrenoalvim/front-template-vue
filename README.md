@@ -1,3 +1,5 @@
+English | [Português](README.pt.md)
+
 # front-template-vue
 
 Vue 3 + Vite frontend template consuming the Laravel API (`back-template-laravel`). Auth, i18n (en/pt), dark/light mode, forms with translated validation, TanStack Query, SEO, Docker, and CI wired up so a real feature is a copy-paste away.
