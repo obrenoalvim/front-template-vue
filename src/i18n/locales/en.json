@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "account": "Account",
+    "admin": "Admin",
     "login": "Log in",
     "logout": "Log out"
   },
@@ -76,6 +77,11 @@
       "submit": "Delete account",
       "success": "Account deleted."
     }
+  },
+  "admin": {
+    "title": "Admin",
+    "email": "Email",
+    "role": "Role"
   },
   "errors": {
     "generic": "Something went wrong. Try again."

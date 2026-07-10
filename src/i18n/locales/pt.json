@@ -2,6 +2,7 @@
   "nav": {
     "home": "Início",
     "account": "Conta",
+    "admin": "Admin",
     "login": "Entrar",
     "logout": "Sair"
   },
@@ -76,6 +77,11 @@
       "submit": "Excluir conta",
       "success": "Conta excluída."
     }
+  },
+  "admin": {
+    "title": "Admin",
+    "email": "E-mail",
+    "role": "Role"
   },
   "errors": {
     "generic": "Algo deu errado. Tente de novo."

@@ -36,6 +36,12 @@ const router = createRouter({
           component: () => import('@/views/AccountView.vue'),
           meta: { requiresAuth: true },
         },
+        {
+          path: 'admin',
+          name: 'admin',
+          component: () => import('@/views/AdminView.vue'),
+          meta: { requiresAuth: true, requiresAdmin: true },
+        },
       ],
     },
     {
@@ -47,7 +53,7 @@ const router = createRouter({
 })
 
 // Single centralized guard: syncs the active locale, then enforces auth on protected routes.
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const locale = to.params.locale as string | undefined
   if (isSupportedLocale(locale)) {
     setLocale(locale)
@@ -55,8 +61,19 @@ router.beforeEach((to) => {
     return `/${DEFAULT_LOCALE}`
   }
 
-  if (to.meta.requiresAuth && !useAuthStore().isAuthenticated) {
+  const auth = useAuthStore()
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
     return { name: 'login', params: { locale: locale ?? DEFAULT_LOCALE } }
+  }
+  if (to.meta.requiresAdmin) {
+    // A hard reload lands here with a token but no fetched user yet — fetch
+    // once before deciding, or a real admin would get bounced by this guard.
+    if (auth.isAuthenticated && !auth.user) {
+      await auth.fetchMe().catch(() => undefined)
+    }
+    if (auth.user?.role !== 'admin') {
+      return { name: 'home', params: { locale: locale ?? DEFAULT_LOCALE } }
+    }
   }
 })
 

@@ -47,6 +47,10 @@ Validadas no startup (`src/lib/env.ts`) — a app lança erro imediatamente com 
 
 Ver `.env.example`.
 
+## Roles
+
+Todo usuário tem um `role` (`'user'` | `'admin'`) vindo das respostas de login/`/api/account` da API Laravel — nunca confia num `role` que você mesmo envia numa requisição. `/admin` (`src/views/AdminView.vue`) é a referência pra uma página admin-only: o `meta: { requiresAdmin: true }` da rota é checado no guard único de navegação em `src/router/index.ts` (que também aguarda um `fetchMe()` se o usuário ainda não foi buscado — um reload duro chega com token mas sem usuário carregado). Isso é só conveniência de UX; o gate real é o middleware `admin` do Laravel rejeitando a requisição. Promove um usuário pelo lado Laravel (`UPDATE users SET role = 'admin' ...`), depois loga de novo — o role é lido fresco de `/api/account`, não fica em cache de uma sessão antiga.
+
 ## Docker
 
 ```sh

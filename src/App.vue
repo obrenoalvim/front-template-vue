@@ -29,6 +29,9 @@ function logout() {
         <LocaleLink v-if="auth.isAuthenticated" to="/account" class="hover:text-primary">{{
           t('nav.account')
         }}</LocaleLink>
+        <LocaleLink v-if="auth.user?.role === 'admin'" to="/admin" class="hover:text-primary">{{
+          t('nav.admin')
+        }}</LocaleLink>
       </nav>
       <div class="flex items-center gap-2">
         <LocaleSwitcher />
